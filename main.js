@@ -15,7 +15,7 @@ const products = [
     name: 'ESP LTD Snakebyte Camo',
     price: 1.779,
     color: 'camo',
-    stars: 3.5,
+    stars: 3,
     reviews: 2,
     seller: 'ESP',
     image:
@@ -25,7 +25,7 @@ const products = [
     name: 'PRS SE Silver Sky Piano Black',
     price: 919,
     color: 'negro',
-    stars: 4.5,
+    stars: 4,
     reviews: 2,
     seller: 'PRS',
     image:
@@ -35,7 +35,7 @@ const products = [
     name: 'Sterling by Music Man Petrucci Majesty 6 AD',
     price: 1.359,
     color: 'negro',
-    stars: 4.8,
+    stars: 5,
     reviews: 7,
     seller: 'Sterling by Music Man',
     image:
@@ -45,7 +45,7 @@ const products = [
     name: 'Schecter Keith Merrow KM-7 MK-III BLC',
     price: 1.799,
     color: 'azul',
-    stars: 4.8,
+    stars: 4,
     reviews: 4,
     seller: 'Schecter',
     image:
@@ -55,7 +55,7 @@ const products = [
     name: 'Fender Brent Mason Tele MN PrimerGrey',
     price: 3.049,
     color: 'gris',
-    stars: 3.8,
+    stars: 3,
     reviews: 6,
     seller: 'Fender',
     image:
@@ -65,7 +65,7 @@ const products = [
     name: 'Evh Frankie Striped MN Relic R/W/B',
     price: 1.429,
     color: 'rojo',
-    stars: 3.8,
+    stars: 3,
     reviews: 21,
     seller: 'Evh',
     image:
@@ -85,7 +85,7 @@ const products = [
     name: 'Dean Guitars Dimebag Dime O Flame ML',
     price: 788,
     color: 'naranja',
-    stars: 4.9,
+    stars: 5,
     reviews: 8,
     seller: 'Dean',
     image:
@@ -95,7 +95,7 @@ const products = [
     name: 'ESP LTD KH WZ',
     price: 1.749,
     color: 'negro',
-    stars: 4.8,
+    stars: 4,
     reviews: 12,
     seller: 'ESP',
     image:
@@ -105,7 +105,7 @@ const products = [
     name: 'Fender Clapton Strat Signature PW',
     price: 2.439,
     color: 'plateado',
-    stars: 4.6,
+    stars: 4,
     reviews: 8,
     seller: 'Fender',
     image:
@@ -125,7 +125,7 @@ const products = [
     name: 'Sterling by Music Man Majesty 100 Chalk Grey',
     price: 1.359,
     color: 'gris',
-    stars: 4.3,
+    stars: 4,
     reviews: 2,
     seller: 'Sterling by Music Man',
     image:
@@ -135,7 +135,7 @@ const products = [
     name: 'Fender Lincoln Brewster Strat MN AG',
     price: 2.591,
     color: 'dorado',
-    stars: 3.2,
+    stars: 3,
     reviews: 1,
     seller: 'Fender',
     image:
@@ -145,7 +145,7 @@ const products = [
     name: 'Evh Wolfgang WG Standard Xotic',
     price: 599,
     color: 'naranja',
-    stars: 4.8,
+    stars: 5,
     reviews: 6,
     seller: 'Evh',
     image:
@@ -166,41 +166,93 @@ const piruleta = [
   }
 ];
 
-const productsSection = document.querySelector('.products');
+const sellers = [];
+let seller = [];
 
-for (const producto of products) {
-  const divProduct = document.createElement('div');
-  const h3Product = document.createElement('h3');
-  const imageProduct = document.createElement('img');
-  const colorProduct = document.createElement('p');
-  const starsProduct = document.createElement('div');
-  const reviewsProduct = document.createElement('p');
-  const priceProduct = document.createElement('p');
-
-  divProduct.classList.add('product');
-  h3Product.textContent = producto.name;
-  imageProduct.src = producto.image;
-  colorProduct.textContent = producto.color;
-
-  for (let i = 0; i < 5; i++) {
-    const star = document.createElement('img');
-    star.src =
-      'https://cdn3.iconfinder.com/data/icons/sympletts-free-sampler/128/star-512.png';
-    starsProduct.classList.add('star');
-    starsProduct.appendChild(star);
+const toFilter = () => {
+  const sellerFiltered = [];
+  for (const producto of products) {
+    if (seller.includes(producto.seller)) {
+      sellerFiltered.push(producto);
+    }
   }
+  toPrint(sellerFiltered);
+};
 
-  reviewsProduct.textContent = producto.reviews;
-  priceProduct.textContent = producto.price + ' €';
+const fillSellers = (guitars) => {
+  sellers.splice(0);
+  for (const guitar of guitars) {
+    if (!sellers.includes(guitar.seller)) {
+      sellers.push(guitar.seller);
+    }
+  }
+};
+fillSellers(products);
 
-  console.log(imageProduct);
+const createSelect = () => {
+  const filterSection = document.querySelector('.filter');
 
-  divProduct.appendChild(h3Product);
-  divProduct.appendChild(imageProduct);
-  divProduct.appendChild(colorProduct);
-  divProduct.appendChild(starsProduct);
-  divProduct.appendChild(reviewsProduct);
-  divProduct.appendChild(priceProduct);
+  const select = document.createElement('select');
 
-  productsSection.appendChild(divProduct);
-}
+  for (const seller of sellers) {
+    const option = document.createElement('option');
+    option.value = seller;
+    option.textContent = seller;
+    select.appendChild(option);
+  }
+  filterSection.appendChild(select);
+
+  select.addEventListener('change', (e) => {
+    seller = e.target.value;
+    toFilter();
+  });
+};
+
+const toPrint = (guitars) => {
+  const productsSection = document.querySelector('.products');
+  productsSection.innerHTML = '';
+
+  for (const guitar of guitars) {
+    const divProduct = document.createElement('div');
+    const imageProduct = document.createElement('img');
+    const h3Product = document.createElement('h3');
+    const starColor = document.createElement('div');
+    const colorProduct = document.createElement('p');
+    const starsProduct = document.createElement('div');
+    const priceProduct = document.createElement('p');
+
+    divProduct.classList.add('product');
+    imageProduct.src = guitar.image;
+    h3Product.textContent = guitar.name;
+    colorProduct.textContent = guitar.color;
+    colorProduct.setAttribute('id', 'color');
+    starsProduct.classList.add('stars');
+
+    for (let i = 0; i < 5; i++) {
+      const star = document.createElement('div');
+      star.classList.add('star');
+      if (i < guitar.stars) {
+        star.classList.add('rated');
+      }
+      starsProduct.appendChild(star);
+      starColor.appendChild(starsProduct);
+    }
+
+    starColor.setAttribute('id', 'starColor');
+
+    starColor.appendChild(colorProduct);
+
+    priceProduct.textContent = guitar.price + ' €';
+    priceProduct.setAttribute('id', 'price');
+
+    divProduct.appendChild(imageProduct);
+    divProduct.appendChild(h3Product);
+    divProduct.appendChild(starColor);
+    divProduct.appendChild(priceProduct);
+
+    productsSection.appendChild(divProduct);
+  }
+};
+
+createSelect();
+toPrint(products);
