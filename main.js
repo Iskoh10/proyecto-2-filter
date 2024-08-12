@@ -359,6 +359,15 @@ const createButtonClean = () => {
 const toPrint = (guitars) => {
   const productsSection = document.querySelector('.products');
   productsSection.innerHTML = '';
+  const filterMenu = document.querySelector('.filter');
+
+  const btnShowFilters = document.createElement('button');
+  btnShowFilters.className = 'showFilters';
+  btnShowFilters.textContent = 'Mostar Menú Filtros';
+  btnShowFilters.addEventListener('click', () =>
+    filterMenu.classList.toggle('filterNoShow')
+  );
+  productsSection.appendChild(btnShowFilters);
 
   for (const guitar of guitars) {
     const divProduct = document.createElement('div');

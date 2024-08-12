@@ -64,6 +64,34 @@ body {
   align-items: center;
 }
 
+.filterNoShow {
+  display: none;
+}
+
+.showFilters {
+  width: 150px;
+  height: 50px;
+  background-color: var(--isc-empty-star);
+  border-radius: var(--isc-border-radius-15px);
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0 5px;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  border: none;
+  box-shadow: 2px 2px 2px black, inset 2px 2px 2px white;
+  transition: box-shadow 0.3s linear 0.1s;
+}
+
+.showFilters:hover {
+  box-shadow: 2px 2px 2px white, inset 2px 2px 2px black;
+}
+
+.showFilters:active {
+  box-shadow: none;
+}
+
 .filter > select {
   margin: var(--isc-margin-10-5);
   font-size: 1.5rem;
@@ -212,6 +240,7 @@ input {
 
 @media screen and (max-width: 1304px) {
   .filter {
+    margin-top: 5%;
     flex-direction: row;
     justify-content: space-around;
     min-width: 100%;
@@ -251,6 +280,7 @@ input {
 
 @media screen and (max-width: 925px) {
   .filter {
+    margin-top: 15%;
     display: grid;
     grid-template-rows: repeat(3, 1fr);
     grid-template-columns: repeat(3, 1fr);
@@ -287,6 +317,7 @@ input {
 
 @media screen and (max-width: 430px) {
   .filter {
+    margin-top: 25%;
     height: 40svh;
     grid-template-rows: repeat(6, 1fr);
     grid-template-columns: 1fr;
