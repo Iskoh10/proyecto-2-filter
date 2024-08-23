@@ -185,13 +185,35 @@ const doubleFilter = (priceSelected) => {
       if (producto.price <= parseInt(priceSelected)) {
         pricesFiltered.push(producto);
         console.log('correcto');
+        toPrint(pricesFiltered);
       } else if (pricesFiltered.length === 0) {
-        pricesFiltered = sellerFiltered;
-        window.alert('No existen productos con ese precio');
+        messageNP();
       }
     }
-    toPrint(pricesFiltered);
   }
+};
+
+let minPrice = 0;
+
+const calculateMinPrice = () => {
+  for (const product of products) {
+    minPrice = Math.min(product.price);
+  }
+};
+calculateMinPrice();
+
+const messageNP = () => {
+  const divProducts = document.querySelector('section.products');
+  divProducts.innerHTML = '';
+  divProducts.classList.add('help');
+
+  const pMessage = document.createElement('p');
+  const pSuggesting = document.createElement('p');
+  pMessage.textContent = 'No existen productos que coincidan con su búsqueda';
+  pSuggesting.textContent = `Actualmente el precio minimo es de ${minPrice}€`;
+
+  divProducts.appendChild(pMessage);
+  divProducts.appendChild(pSuggesting);
 };
 
 const toFilterPrice = (priceSelected) => {
@@ -201,14 +223,17 @@ const toFilterPrice = (priceSelected) => {
   for (const producto of products) {
     if (producto.price <= parseInt(priceSelected)) {
       pricesFiltered.push(producto);
-    } else if (priceSelected <= 598) {
+    } else if (priceSelected < minPrice) {
       pricesFiltered = products;
     }
   }
-  if (pricesFiltered.length === 15) {
-    window.alert('No existen productos');
-  }
   toPrint(pricesFiltered);
+
+  if (pricesFiltered.length === 15) {
+    messageNP();
+
+    // window.alert('No existen productos');
+  }
 };
 
 const toFilterStars = (stars) => {
@@ -359,6 +384,7 @@ const createButtonClean = () => {
 const toPrint = (guitars) => {
   const productsSection = document.querySelector('.products');
   productsSection.innerHTML = '';
+  productsSection.classList.remove('help');
   const filterMenu = document.querySelector('.filter');
 
   const btnShowFilters = document.createElement('button');
@@ -368,6 +394,20 @@ const toPrint = (guitars) => {
     filterMenu.classList.toggle('filterNoShow')
   );
   productsSection.appendChild(btnShowFilters);
+
+  const btnShowFilterMini = document.createElement('button');
+  btnShowFilterMini.className = 'showFiltersMini';
+  const burgerPic = document.createElement('img');
+
+  burgerPic.src = 'public/burger-menu-svgrepo-com.svg';
+
+  btnShowFilterMini.appendChild(burgerPic);
+
+  btnShowFilterMini.addEventListener('click', () =>
+    filterMenu.classList.toggle('filterNoShow')
+  );
+
+  productsSection.appendChild(btnShowFilterMini);
 
   for (const guitar of guitars) {
     const divProduct = document.createElement('div');
